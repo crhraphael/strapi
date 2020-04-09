@@ -169,9 +169,12 @@ const applyQueryParams = ({ query, filters }) => {
  * @param {Object} options.populate - Paths to populate
  * @param {Object} options.where - Where clauses we need to populate to filters
  */
-const computePopulatedPaths = ({ model, populate = [], where = [] }) => {
   const castedPopulatePaths = populate
-    .map(el => (Array.isArray(el) ? el.join('.') : el))
+		.map(el => (Array.isArray(el) 
+			? el.join('.') 
+			: (el.path) 
+				? utils.pathObjToPathString(el)
+				: el))
     .map(path => findModelPath({ rootModel: model, path }))
     .map(path => {
       const assocModel = findModelByPath({ rootModel: model, path });
